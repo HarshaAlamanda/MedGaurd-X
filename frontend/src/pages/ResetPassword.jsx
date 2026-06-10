@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import axios from 'axios';
+import api from '../api/axios';
 import GlassCard from '../components/ui/GlassCard';
 import GradientButton from '../components/ui/GradientButton';
 import AnimatedInput from '../components/ui/AnimatedInput';
@@ -48,7 +48,7 @@ export default function ResetPassword() {
 
     setLoading(true);
     try {
-      await axios.post('/auth/reset-password', { token, new_password: password });
+      await api.post('/auth/reset-password', { token, new_password: password });
       setSuccess(true);
       setTimeout(() => navigate('/login'), 3000);
     } catch (err) {

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import axios from 'axios';
+import api from '../api/axios';
 import GlassCard from '../components/ui/GlassCard';
 import GradientButton from '../components/ui/GradientButton';
 import AnimatedInput from '../components/ui/AnimatedInput';
@@ -124,7 +124,7 @@ export default function Signup() {
 
     setLoading(true);
     try {
-      await axios.post('/auth/register', { email, password });
+      await api.post('/auth/register', { email, password });
       setSuccess(true);
       setTimeout(() => navigate('/login'), 2500);
     } catch (err) {
