@@ -19,7 +19,9 @@ load_dotenv()
 from PIL import Image, ImageFilter, ImageEnhance
 import pdfplumber
 import pytesseract
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+_tesseract_win = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+if os.path.exists(_tesseract_win):
+    pytesseract.pytesseract.tesseract_cmd = _tesseract_win
 from jose import JWTError, jwt
 
 import database        # uses bcrypt directly — no passlib dependency
