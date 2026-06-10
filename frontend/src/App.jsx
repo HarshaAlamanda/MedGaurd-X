@@ -24,6 +24,11 @@ function PageLoader() {
   );
 }
 
+// Ping backend on app load so Render wakes up before user submits a form
+if (window.location.hostname !== 'localhost') {
+  fetch('https://medgaurd-x.onrender.com/docs', { method: 'GET', mode: 'no-cors' }).catch(() => {});
+}
+
 export default function App() {
   const location  = useLocation();
   const prevPath  = useRef(null);
