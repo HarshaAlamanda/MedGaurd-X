@@ -12,15 +12,4 @@ export default defineConfig({
       '/analyses': { target: 'http://localhost:8001', changeOrigin: true },
     },
   },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'vendor-react':  ['react', 'react-dom', 'react-router-dom'],
-          'vendor-motion': ['framer-motion'],
-          'vendor-axios':  ['axios'],
-        },
-      },
-    },
-  },
 })
