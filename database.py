@@ -20,9 +20,17 @@ def init_db():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email TEXT UNIQUE NOT NULL,
                 hashed_password TEXT NOT NULL,
+                first_name TEXT DEFAULT '',
+                last_name TEXT DEFAULT '',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
+        # Add columns to existing DB if upgrading
+        for col in [("first_name", "TEXT DEFAULT ''"), ("last_name", "TEXT DEFAULT ''")]:
+            try:
+                conn.execute(f"ALTER TABLE users ADD COLUMN {col[0]} {col[1]}")
+            except Exception:
+                pass
         conn.execute("""
             CREATE TABLE IF NOT EXISTS password_reset_tokens (
                 token TEXT PRIMARY KEY,
@@ -46,18 +54,26 @@ def init_db():
         conn.commit()
 
 
-def create_user(email: str, password: str) -> bool:
+def create_user(email: str, password: str, first_name: str = "", last_name: str = "") -> bool:
     hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
     try:
         with _get_conn() as conn:
             conn.execute(
-                "INSERT INTO users (email, hashed_password) VALUES (?, ?)",
-                (email.lower().strip(), hashed),
+                "INSERT INTO users (email, hashed_password, first_name, last_name) VALUES (?, ?, ?, ?)",
+                (email.lower().strip(), hashed, first_name.strip(), last_name.strip()),
             )
             conn.commit()
         return True
     except sqlite3.IntegrityError:
         return False
+
+
+def get_all_users() -> list:
+    with _get_conn() as conn:
+        rows = conn.execute(
+            "SELECT id, email, first_name, last_name, created_at FROM users ORDER BY created_at DESC"
+        ).fetchall()
+    return [dict(row) for row in rows]
 
 
 def get_user(email: str):

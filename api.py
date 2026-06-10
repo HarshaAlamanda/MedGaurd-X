@@ -1,4 +1,6 @@
 from fastapi import FastAPI, HTTPException, UploadFile, File, Depends, Body
+from fastapi.responses import StreamingResponse
+import csv, io
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from pydantic import BaseModel
@@ -88,6 +90,8 @@ class PatientRecord(BaseModel):
 class RegisterRequest(BaseModel):
     email: str
     password: str
+    first_name: Optional[str] = ""
+    last_name: Optional[str] = ""
 
 class ForgotPasswordRequest(BaseModel):
     email: str
@@ -186,7 +190,7 @@ def register(req: RegisterRequest):
         raise HTTPException(status_code=400, detail="Invalid email")
     if len(req.password) < 6:
         raise HTTPException(status_code=400, detail="Password must be at least 6 characters")
-    created = database.create_user(req.email, req.password)
+    created = database.create_user(req.email, req.password, req.first_name or "", req.last_name or "")
     if not created:
         raise HTTPException(status_code=409, detail="Email already registered")
     return {"message": "Account created successfully"}
@@ -593,3 +597,23 @@ def delete_account(req: DeleteAccountRequest, current_user: str = Depends(get_cu
         raise HTTPException(status_code=400, detail="Incorrect password")
     database.delete_user(current_user)
     return {"message": "Account deleted"}
+
+
+# ================= ADMIN EXPORT =================
+ADMIN_KEY = os.environ.get("ADMIN_KEY", "medguard-admin-2024")
+
+@app.get("/admin/export-users")
+def export_users(key: str = ""):
+    if key != ADMIN_KEY:
+        raise HTTPException(status_code=403, detail="Invalid admin key")
+    users = database.get_all_users()
+    output = io.StringIO()
+    writer = csv.DictWriter(output, fieldnames=["id", "email", "first_name", "last_name", "created_at"])
+    writer.writeheader()
+    writer.writerows(users)
+    output.seek(0)
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=medguard_users.csv"}
+    )
