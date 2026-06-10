@@ -1,0 +1,16 @@
+pandas
+numpy
+scikit-learn
+xgboost
+fastapi
+uvicorn[standard]
+python-multipart
+python-jose[cryptography]
+bcrypt
+pdfplumber
+Pillow
+pytesseract
+torch
+torchvision
+opencv-python-headless
+python-dotenv
