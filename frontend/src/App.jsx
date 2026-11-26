@@ -10,6 +10,7 @@ const Signup        = lazy(() => import('./pages/Signup'));
 const Dashboard     = lazy(() => import('./pages/Dashboard'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const Profile       = lazy(() => import('./pages/Profile'));
+const Admin         = lazy(() => import('./pages/Admin'));
 
 function PublicOnly({ children }) {
   const { isAuthenticated } = useAuth();
@@ -64,6 +65,7 @@ export default function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard"    element={<Dashboard />} />
             <Route path="/profile"      element={<Profile />} />
+            <Route path="/admin"        element={<Admin />} />
           </Route>
           <Route path="*"               element={<Navigate to="/" replace />} />
         </Routes>
