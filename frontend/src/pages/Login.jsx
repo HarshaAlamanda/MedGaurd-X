@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import axios from 'axios';
+import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import GlassCard from '../components/ui/GlassCard';
 import GradientButton from '../components/ui/GradientButton';
@@ -88,7 +88,7 @@ export default function Login() {
       const params = new URLSearchParams();
       params.append('username', email);
       params.append('password', password);
-      const res = await axios.post('/auth/login', params, {
+      const res = await api.post('/auth/login', params, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       });
       login(res.data.access_token, rememberMe);
@@ -108,7 +108,7 @@ export default function Login() {
     setForgotError('');
     setForgotLoading(true);
     try {
-      await axios.post('/auth/forgot-password', { email: forgotEmail });
+      await api.post('/auth/forgot-password', { email: forgotEmail });
       setForgotSent(true);
     } catch (err) {
       setForgotError(err.response?.data?.detail || 'Failed to send reset link. Try again.');
