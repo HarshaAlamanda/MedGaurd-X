@@ -99,14 +99,16 @@ function StrengthBar({ password }) {
 }
 
 export default function Signup() {
-  const [email, setEmail]       = useState('');
-  const [password, setPassword] = useState('');
-  const [confirm, setConfirm]   = useState('');
-  const [showPwd, setShowPwd]   = useState(false);
-  const [showCfm, setShowCfm]   = useState(false);
-  const [error, setError]       = useState('');
-  const [success, setSuccess]   = useState(false);
-  const [loading, setLoading]   = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName]   = useState('');
+  const [email, setEmail]         = useState('');
+  const [password, setPassword]   = useState('');
+  const [confirm, setConfirm]     = useState('');
+  const [showPwd, setShowPwd]     = useState(false);
+  const [showCfm, setShowCfm]     = useState(false);
+  const [error, setError]         = useState('');
+  const [success, setSuccess]     = useState(false);
+  const [loading, setLoading]     = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -124,7 +126,7 @@ export default function Signup() {
 
     setLoading(true);
     try {
-      await api.post('/auth/register', { email, password });
+      await api.post('/auth/register', { email, password, first_name: firstName, last_name: lastName });
       setSuccess(true);
       setTimeout(() => navigate('/login'), 2500);
     } catch (err) {
@@ -235,6 +237,22 @@ export default function Signup() {
                   </div>
 
                   <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="grid grid-cols-2 gap-3">
+                      <AnimatedInput
+                        label="First name"
+                        type="text"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        placeholder="John"
+                      />
+                      <AnimatedInput
+                        label="Last name"
+                        type="text"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        placeholder="Doe"
+                      />
+                    </div>
                     <AnimatedInput
                       label="Email address"
                       type="email"
