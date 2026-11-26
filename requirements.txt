@@ -10,7 +10,5 @@ bcrypt
 pdfplumber
 Pillow
 pytesseract
-torch
-torchvision
 opencv-python-headless
 python-dotenv

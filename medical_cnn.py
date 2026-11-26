@@ -10,19 +10,26 @@ No training data needed — combines:
 
 import cv2
 import numpy as np
-import torch
-import torchvision.models as models
-import torchvision.transforms as transforms
 from PIL import Image
+
+try:
+    import torch
+    import torchvision.models as models
+    import torchvision.transforms as transforms
+    _TORCH_AVAILABLE = True
+except ImportError:
+    _TORCH_AVAILABLE = False
 
 # ── Load MobileNetV2 once at module import ──────────────────────────────────
 _model = None
-_transform = transforms.Compose([
-    transforms.Resize(256),
-    transforms.CenterCrop(224),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-])
+
+if _TORCH_AVAILABLE:
+    _transform = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
 
 def _get_model():
     global _model
@@ -33,34 +40,25 @@ def _get_model():
 
 
 def _cnn_features(img: Image.Image) -> dict:
-    """
-    Run MobileNetV2 and extract:
-    - Top-1 ImageNet class probability
-    - Probability mass on document-like ImageNet classes
-    - Mean activation of the final conv feature map (texture richness)
-    """
+    if not _TORCH_AVAILABLE:
+        return {"doc_class_activation": 0.0, "feature_texture": 0.0}
+
     model = _get_model()
     tensor = _transform(img.convert("RGB")).unsqueeze(0)
 
     with torch.no_grad():
-        # Hook into the last conv layer for feature map stats
-        features = model.features(tensor)            # (1, 1280, 7, 7)
-        pooled = features.mean(dim=[2, 3])[0]        # (1280,)
+        features = model.features(tensor)
+        pooled = features.mean(dim=[2, 3])[0]
         logits = model.classifier(features.mean(dim=[2, 3]))
         probs = torch.softmax(logits, dim=1)[0]
 
-    # ImageNet classes that fire for document / form-like images
-    # 463=book_jacket, 549=envelope, 700=paper_towel, 760=quill,
-    # 809=space_bar(keyboard), 887=typewriter, 916=web_site, 921=book_jacket
     DOC_CLASSES = [463, 549, 700, 760, 809, 887, 916, 921]
     doc_activation = float(probs[DOC_CLASSES].sum().item())
-
-    # Texture richness: high std in feature map = rich texture (text, tables)
     feature_std = float(pooled.std().item())
 
     return {
         "doc_class_activation": doc_activation,
-        "feature_texture": min(feature_std / 0.5, 1.0),   # normalize ~0-1
+        "feature_texture": min(feature_std / 0.5, 1.0),
     }
 
 
@@ -163,8 +161,11 @@ def classify_medical_document(img: Image.Image) -> dict:
     # Normalise: max expected activation from doc-class subset is ~0.15
     cnn_support = min(cnn["doc_class_activation"] / 0.15, 1.0)
 
-    # ── Blend: structural 80 %, CNN 20 % ──────────────────────────────────
-    cnn_medical_score = round(structural_score * 0.80 + cnn_support * 0.20, 3)
+    # ── Blend: structural 80 %, CNN 20 % (100 % structural if torch unavailable)
+    if _TORCH_AVAILABLE:
+        cnn_medical_score = round(structural_score * 0.80 + cnn_support * 0.20, 3)
+    else:
+        cnn_medical_score = round(structural_score, 3)
 
     return {
         "cnn_medical_score": cnn_medical_score,
