@@ -1,0 +1,21 @@
+{
+  "feature_names": [
+    "age",
+    "gender",
+    "blood_pressure_systolic",
+    "blood_pressure_diastolic",
+    "heart_rate",
+    "temperature",
+    "oxygen_saturation",
+    "glucose_level",
+    "medical_condition",
+    "visit_month",
+    "visit_day",
+    "visit_dayofweek",
+    "symptom_Fever",
+    "symptom_Cough",
+    "symptom_Fatigue",
+    "symptom_Shortness_of_Breath",
+    "symptom_Chest_Pain"
+  ]
+}
