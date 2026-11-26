@@ -27,6 +27,14 @@
   <img src="https://img.shields.io/badge/OpenCV-374151?style=flat-square&amp;logo=opencv&amp;logoColor=white" alt="OpenCV" />
 </p>
 
+## MedGuard-X · Health Intelligence
+
+<p align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Heart_Monitor_Flat_Icon_GIF_Animation.gif" width="100" height="100" alt="Animated heart monitor representing MedGuard-X health analysis" />
+</p>
+
+<p align="center"><strong>Patient data · Risk insights · Document screening</strong></p>
+
 MedGuard-X combines **XGBoost risk predictions**, **OCR text extraction**, and **document structure analysis** in a React and FastAPI application. Review model scores, export PDF reports, and revisit saved analyses from your account.
 
 | Health risk | Fraud screening | Document analysis |
@@ -320,6 +328,16 @@ ADMIN_KEY=your_admin_key
 
 ## Deployment
 
+### Deployment in Motion
+
+<p align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/WP25_Rocket_-_blue.gif" width="160" height="160" alt="Animated blue rocket illustrating application deployment" />
+</p>
+
+<p align="center"><strong>Commit → Build → Deploy → Review</strong><br /><sub>Illustrative animation; not a live deployment-status indicator.</sub></p>
+
+Use the [Vercel frontend](https://medgaurd-x.vercel.app) and [Render API documentation](https://medgaurd-x.onrender.com/docs) to review the deployed application. Deployment settings are described below.
+
 | Service | Purpose | Config |
 |---------|---------|--------|
 | [Render](https://render.com) | Python backend | `render.yaml` |
@@ -342,6 +360,13 @@ ADMIN_KEY=your_admin_key
 ## Disclaimer
 
 > Built for research and educational purposes only. Not intended for clinical diagnosis or medical decision-making. Always consult a qualified healthcare professional.
+
+---
+
+## Animation Credits
+
+- [Heart Monitor Flat Icon GIF Animation.gif](https://commons.wikimedia.org/wiki/File:Heart_Monitor_Flat_Icon_GIF_Animation.gif) by [Videoplasty.com](https://videoplasty.com), licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Original GIF embedded unchanged.
+- [WP25 Rocket - blue.gif](https://commons.wikimedia.org/wiki/File:WP25_Rocket_-_blue.gif) by Wikimedia Foundation staff and contractors, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Original GIF embedded unchanged; displayed at a smaller size.
 
 ---
 
