@@ -1,22 +1,12 @@
 <h1 align="center">MedGuard-X</h1>
+<p align="center"><strong>AI-assisted health risk and medical fraud screening</strong></p>
+<p align="center">Patient insights. Document analysis. One connected workspace.</p>
 
 <p align="center">
-  <strong>AI-Powered Health Risk &amp; Medical Fraud Analysis</strong>
-</p>
-
-<p align="center">
-  Explore patient risk, flag suspicious records, and analyze medical documents<br />
-  in one interactive dashboard.
-</p>
-
-<p align="center">
-  <a href="https://medgaurd-x.vercel.app"><strong>Launch Demo</strong></a>
-  &nbsp; &middot; &nbsp;
-  <a href="https://medgaurd-x.onrender.com/docs"><strong>API Documentation</strong></a>
-  &nbsp; &middot; &nbsp;
-  <a href="#getting-started"><strong>Getting Started</strong></a>
-  &nbsp; &middot; &nbsp;
-  <a href="#system-architecture"><strong>Architecture</strong></a>
+  <a href="https://medgaurd-x.vercel.app"><strong>Explore the demo</strong></a> &nbsp;·&nbsp;
+  <a href="https://medgaurd-x.onrender.com/docs"><strong>API documentation</strong></a> &nbsp;·&nbsp;
+  <a href="#quick-start"><strong>Quick start</strong></a> &nbsp;·&nbsp;
+  <a href="docs/ARCHITECTURE.md"><strong>Architecture</strong></a>
 </p>
 
 <p align="center">
@@ -24,344 +14,173 @@
   <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&amp;logo=fastapi&amp;logoColor=white" alt="FastAPI" />
   <img src="https://img.shields.io/badge/React-19-20232a?style=flat-square&amp;logo=react&amp;logoColor=61DAFB" alt="React 19" />
   <img src="https://img.shields.io/badge/XGBoost-3.2-374151?style=flat-square" alt="XGBoost 3.2" />
-  <img src="https://img.shields.io/badge/OpenCV-374151?style=flat-square&amp;logo=opencv&amp;logoColor=white" alt="OpenCV" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-3-374151?style=flat-square&amp;logo=tailwindcss&amp;logoColor=white" alt="Tailwind CSS 3" />
 </p>
 
-## MedGuard-X · Health Intelligence
+## Health intelligence, in context
 
-<p align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Heart_Monitor_Flat_Icon_GIF_Animation.gif" width="100" height="100" alt="Animated heart monitor representing MedGuard-X health analysis" />
-</p>
+<p align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Heart_Monitor_Flat_Icon_GIF_Animation.gif" width="100" height="100" alt="Animated heart monitor illustrating the health analysis theme" /></p>
 
-<p align="center"><strong>Patient data · Risk insights · Document screening</strong></p>
+MedGuard-X is a full-stack demonstration project that combines **XGBoost predictions**, **OCR text extraction**, and **document structure analysis**. A React dashboard brings together patient input, model scores, saved analyses, and downloadable PDF reports.
 
-MedGuard-X combines **XGBoost risk predictions**, **OCR text extraction**, and **document structure analysis** in a React and FastAPI application. Review model scores, export PDF reports, and revisit saved analyses from your account.
+> **Project scope:** Built for research and education. Scores are screening signals, not clinical diagnoses, proof of fraud, or verification of document authenticity.
 
-| Health risk | Fraud screening | Document analysis |
+## Capabilities
+
+| Area | What you can do | Implementation |
 | --- | --- | --- |
-| Estimate patient risk from clinical measurements. | Flag potentially anomalous records with model-generated scores. | Extract text and assess medical-document signals with Tesseract OCR and OpenCV. |
+| Health risk | Review Low, Medium, or High model predictions | XGBoost with preprocessing artifacts |
+| Fraud screening | Inspect a record's predicted class and score | XGBoost classifier |
+| Document analysis | Extract text and inspect medical-document signals | pdfplumber, Tesseract OCR, OpenCV |
+| Analysis workspace | Review results and export PDF reports | React, Framer Motion, jsPDF |
+| Account history | Save, revisit, and delete account-specific analyses | FastAPI, JWT, SQLite |
+| Account management | Register, sign in, reset passwords, and manage profiles | bcrypt, SMTP, authenticated endpoints |
 
----
+## How it works
 
-## System Architecture
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        USER BROWSER                             │
-│              https://medgaurd-x.vercel.app                      │
-│                                                                  │
-│   ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────┐  │
-│   │ Landing  │  │  Login / │  │Dashboard │  │   Profile /  │  │
-│   │  Page    │  │  Signup  │  │ Analysis │  │    Admin     │  │
-│   └──────────┘  └──────────┘  └──────────┘  └──────────────┘  │
-│         React 19 + Vite + Tailwind CSS + Framer Motion          │
-└───────────────────────────┬─────────────────────────────────────┘
-                            │ HTTPS (Axios + JWT Bearer)
-                            ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                  FastAPI BACKEND (Render)                        │
-│              https://medgaurd-x.onrender.com                    │
-│                                                                  │
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌──────────┐ │
-│  │ /auth/*    │  │ /predict/* │  │ /analyze/  │  │/analyses │ │
-│  │ register   │  │ health     │  │ document   │  │ history  │ │
-│  │ login      │  │ fraud      │  │            │  │ export   │ │
-│  │ reset-pwd  │  └─────┬──────┘  └─────┬──────┘  └──────────┘ │
-│  └─────┬──────┘        │               │                        │
-│        │               ▼               ▼                        │
-│  ┌─────▼──────┐  ┌────────────┐  ┌────────────┐               │
-│  │  SQLite DB │  │  XGBoost   │  │ Tesseract  │               │
-│  │  (users,   │  │  Models    │  │ OCR +      │               │
-│  │  analyses) │  │  (.joblib) │  │ OpenCV CNN │               │
-│  └────────────┘  └────────────┘  └────────────┘               │
-└─────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    UI["React dashboard"] --> API["FastAPI service"]
+    API --> ML["Patient risk and fraud models"]
+    API --> DOC["OCR and document screening"]
+    API --> DB["SQLite accounts and history"]
+    ML --> RESULTS["Scores and analysis results"]
+    DOC --> RESULTS
+    RESULTS --> UI
+    UI --> PDF["PDF report export"]
 ```
 
----
+Read the [architecture notes](docs/ARCHITECTURE.md) for preprocessing, document analysis, and source-file responsibilities.
 
-## ML Pipeline
-
-```
-                    ┌─────────────────────────────────┐
-                    │         INPUT SOURCES           │
-                    └──────┬──────────────┬───────────┘
-                           │              │
-              ┌────────────▼───┐    ┌─────▼──────────────┐
-              │  Patient Data  │    │  Medical Document  │
-              │  (21 vitals)   │    │  (PDF / Image)     │
-              └────────────┬───┘    └─────┬──────────────┘
-                           │              │
-          ┌────────────────▼──┐    ┌──────▼──────────────┐
-          │   PREPROCESSING   │    │    OCR PIPELINE     │
-          │ • Imputation      │    │ • pdfplumber (PDF)  │
-          │ • Feature eng.    │    │ • Tesseract (image) │
-          │ • Scaling         │    │ • Text cleaning     │
-          └──────┬────────────┘    └──────┬──────────────┘
-                 │                        │
-    ┌────────────▼───────┐    ┌───────────▼────────────────┐
-    │   DUAL XGBOOST     │    │     DOCUMENT ANALYSIS      │
-    │                    │    │                             │
-    │ ┌────────────────┐ │    │ ┌─────────────────────┐   │
-    │ │ Health Risk    │ │    │ │ Keyword Matching     │   │
-    │ │ Classifier     │ │    │ │ 40+ medical terms    │   │
-    │ │ Low/Med/High   │ │    │ └──────────┬──────────┘   │
-    │ └────────────────┘ │    │            │               │
-    │ ┌────────────────┐ │    │ ┌──────────▼──────────┐   │
-    │ │ Fraud Detector │ │    │ │ OpenCV Structural   │   │
-    │ │ Score 0.0-1.0  │ │    │ │ Analysis (edges,    │   │
-    │ └────────────────┘ │    │ │ tables, whitespace) │   │
-    └──────┬─────────────┘    └──────────┬────────────────┘
-           │                             │
-           └──────────────┬──────────────┘
-                          ▼
-              ┌───────────────────────┐
-              │     RESULTS ENGINE    │
-              │ • Animated UI verdict │
-              │ • Fraud probability   │
-              │ • Risk classification │
-              │ • PDF report export   │
-              │ • Save to history     │
-              └───────────────────────┘
-```
-
----
-
-## Project Structure
-
-```
-MedGaurd-X/
-│
-├── api.py                          # FastAPI app — all endpoints
-├── database.py                     # SQLite ORM (users, analyses, tokens)
-├── medical_cnn.py                  # OpenCV document classifier
-├── requirements.txt                # Python dependencies
-├── render.yaml                     # Render deployment config
-├── .env.example                    # Environment variable template
-│
-├── ── ML Models ──
-│   ├── health_risk_model.joblib    # XGBoost health classifier
-│   ├── health_risk_scaler.joblib
-│   ├── health_risk_imputer.joblib
-│   ├── health_risk_label_encoder.joblib
-│   ├── health_features.json
-│   ├── fraud_detection_model.joblib # XGBoost fraud detector
-│   ├── fraud_detection_scaler.joblib
-│   ├── fraud_detection_imputer.joblib
-│   └── fraud_features.json
-│
-├── ── Training Scripts ──
-│   ├── train_health.py
-│   ├── train_fraud.py
-│   └── generate_dataset.py
-│
-└── frontend/                       # React + Vite app
-    ├── index.html
-    ├── vite.config.js
-    ├── vercel.json                 # SPA routing rewrite rule
-    ├── tailwind.config.js
-    │
-    └── src/
-        ├── App.jsx                 # Routes + page transitions
-        ├── main.jsx
-        │
-        ├── api/
-        │   └── axios.js            # Configured instance (runtime URL)
-        │
-        ├── context/
-        │   └── AuthContext.jsx     # JWT auth state
-        │
-        ├── pages/
-        │   ├── Landing.jsx         # Public hero page
-        │   ├── Login.jsx
-        │   ├── Signup.jsx          # First name, last name, email, password
-        │   ├── Dashboard.jsx       # Analysis tabs + history
-        │   ├── Profile.jsx         # Change password, delete account
-        │   ├── ResetPassword.jsx
-        │   └── Admin.jsx           # Employee-gated CSV export
-        │
-        ├── components/
-        │   ├── layout/
-        │   │   ├── Navbar.jsx      # Translucent glass navbar
-        │   │   ├── Footer.jsx
-        │   │   └── ProtectedRoute.jsx
-        │   ├── dashboard/
-        │   │   ├── DocumentUpload.jsx
-        │   │   ├── PatientForm.jsx
-        │   │   └── FraudGauge.jsx  # Animated SVG arc
-        │   ├── animations/
-        │   │   ├── PageTransitionOverlay.jsx
-        │   │   ├── HeartbeatLine.jsx
-        │   │   └── MedicalParticles.jsx
-        │   └── ui/
-        │       ├── GlassCard.jsx
-        │       ├── GradientButton.jsx
-        │       └── AnimatedInput.jsx
-        │
-        └── utils/
-            └── exportPdf.js        # jsPDF formatted report
-```
-
----
-
-## Features
-
-| Module | Description | Status |
-|--------|-------------|--------|
-| **Health Risk AI** | XGBoost predicts Low / Medium / High risk from 21 patient vitals | ✅ Live |
-| **Fraud Detection** | ML model flags anomalous records with fraud probability 0–100% | ✅ Live |
-| **Document OCR** | Tesseract extracts text from PDFs and images, detects 40+ medical keywords | ✅ Live |
-| **CNN Visual Analysis** | OpenCV structural analysis verifies document authenticity | ✅ Live |
-| **Analysis History** | Every scan auto-saved per user, deletable, paginated | ✅ Live |
-| **PDF Export** | Formatted A4 report with vitals table, fraud bar, keywords | ✅ Live |
-| **User Profile** | Change password, view stats (total / fraud / clear), delete account | ✅ Live |
-| **Password Reset** | Time-limited reset link via Gmail SMTP | ✅ Live |
-| **Admin Panel** | Employee-gated CSV export of all registered users | ✅ Live |
-
----
-
-## API Endpoints
-
-```
-AUTH
-  POST   /auth/register          Register new user (email, password, first_name, last_name)
-  POST   /auth/login             Login → JWT token
-  POST   /auth/forgot-password   Send reset email
-  POST   /auth/reset-password    Set new password from token
-  GET    /auth/profile           Get profile + stats (protected)
-  POST   /auth/change-password   Update password (protected)
-  DELETE /auth/account           Delete account + all data (protected)
-
-PREDICTION
-  POST   /predict/health         XGBoost health risk → {risk_level, confidence, features}
-  POST   /predict/fraud          XGBoost fraud score → {fraud_score, is_fraud}
-
-DOCUMENT
-  POST   /analyze/document       OCR + CNN analysis → {fraud_score, keywords, is_medical}
-
-HISTORY
-  GET    /analyses               All saved analyses for current user (protected)
-  POST   /analyses               Save analysis result (protected)
-  DELETE /analyses/{id}          Delete one analysis (protected)
-
-ADMIN
-  GET    /admin/export-users     Download users CSV (?key=ADMIN_KEY)
-```
-
----
-
-## Tech Stack
-
-### Backend
-| Technology | Purpose |
-|-----------|---------|
-| Python 3.11 | Core language |
-| FastAPI + Uvicorn | REST API server |
-| XGBoost + scikit-learn | Health risk & fraud ML models |
-| Tesseract OCR | Text extraction from documents |
-| pdfplumber | PDF text extraction |
-| OpenCV (headless) | Document structural analysis |
-| SQLite (stdlib) | User & analysis persistence |
-| python-jose | JWT token generation & validation |
-| bcrypt | Password hashing |
-| smtplib + Gmail SMTP | Password reset emails |
-| python-dotenv | Environment variable loading |
-
-### Frontend
-| Technology | Purpose |
-|-----------|---------|
-| React 19 + Vite | UI framework + build tool |
-| Tailwind CSS | Utility-first styling |
-| Framer Motion | Page transitions + animations |
-| Axios | HTTP client with JWT interceptor |
-| jsPDF | Client-side PDF export |
-| React Router v6 | Client-side routing |
-
----
-
-## Getting Started
+## Quick start
 
 ### Prerequisites
-- Python 3.11+
-- Node.js 18+
-- [Tesseract OCR](https://github.com/UB-Mannheim/tesseract/wiki) (Windows) or `apt-get install tesseract-ocr` (Linux)
 
-### 1. Clone the repo
+- Python 3.11 or newer, with a version compatible with the pinned dependencies in `requirements.txt`.
+- Node.js **22.12 or newer** for the Vite 8 frontend; use a supported Node LTS release.
+- Tesseract OCR installed and available on your system path. On Windows, the backend also checks `C:\Program Files\Tesseract-OCR\tesseract.exe`.
+- Git and npm.
+
+### 1. Clone and configure
+
 ```bash
 git clone https://github.com/HarshaAlamanda/MedGaurd-X.git
 cd MedGaurd-X
+python -m venv .venv
 ```
 
-### 2. Backend setup
+Activate the environment:
+
+| Shell | Command |
+| --- | --- |
+| macOS / Linux | `source .venv/bin/activate` |
+| Windows PowerShell | `.venv\Scripts\Activate.ps1` |
+| Windows Command Prompt | `.venv\Scripts\activate.bat` |
+
 ```bash
-pip install -r requirements.txt
-cp .env.example .env
-# Fill in SMTP credentials and secret key
-python -m uvicorn api:app --port 8001 --reload
+python -m pip install -r requirements.txt
 ```
 
-### 3. Frontend setup
+Copy `.env.example` to `.env` (`cp .env.example .env` on macOS/Linux; `Copy-Item .env.example .env` in PowerShell). Replace the placeholder secrets before use.
+
+### 2. Run the backend
+
+From the repository root:
+
+```bash
+python -m uvicorn api:app --host 127.0.0.1 --port 8001 --reload
+```
+
+Open [local API documentation](http://localhost:8001/docs). Keep this terminal running.
+
+### 3. Run the frontend
+
+In a second terminal:
+
 ```bash
 cd frontend
-npm install
+npm ci
 npm run dev
 ```
 
-Open **http://localhost:5173**
+Open **http://localhost:5173**. Use `localhost`: the current API client chooses its local proxy by hostname. The Vite proxy forwards supported API routes to port `8001`.
 
----
+### Environment configuration
 
-## Environment Variables
+| Variable | Purpose |
+| --- | --- |
+| `MEDGUARD_SECRET` | JWT signing secret; replace the development value |
+| `FRONTEND_URL` | Frontend origin and password-reset link base |
+| `SMTP_HOST`, `SMTP_PORT` | Outgoing mail server configuration |
+| `SMTP_USER`, `SMTP_PASS` | Credentials used for password-reset email |
+| `ADMIN_KEY` | Shared key for the administrative CSV export endpoint |
 
-```env
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your_email@gmail.com
-SMTP_PASS=your_16_char_app_password
-MEDGUARD_SECRET=change_this_to_a_long_random_string
-FRONTEND_URL=http://localhost:5173
-ADMIN_KEY=your_admin_key
-```
+Keep `.env`, credentials, uploaded documents, and local database files out of commits. Use synthetic records when trying the demo.
 
-> **Gmail App Password:** Google Account → Security → 2-Step Verification → App passwords
+## Repository guide
 
----
+| Path | Responsibility |
+| --- | --- |
+| `api.py` | API routes, authentication, model loading, and OCR orchestration |
+| `database.py` | SQLite persistence for users, analyses, and tokens |
+| `medical_cnn.py` | OpenCV features and optional MobileNetV2 support |
+| `train_health.py` | Health-model training and evaluation script |
+| `generate_dataset.py` | Synthetic dataset generation |
+| `*_model.joblib`, `*_scaler.joblib`, `*_imputer.joblib` | Serialized inference artifacts |
+| `health_features.json`, `fraud_features.json` | Ordered model input schemas |
+| `frontend/src/` | Pages, components, API client, and PDF export |
+| `docs/ARCHITECTURE.md` | System design and model limitations |
+| `CHANGELOG.md` | Project change history |
+
+## API at a glance
+
+| Area | Routes |
+| --- | --- |
+| Authentication | `/auth/register`, `/auth/login`, `/auth/forgot-password`, `/auth/reset-password` |
+| Predictions | `/predict/health`, `/predict/fraud` |
+| Documents | `/analyze/document` |
+| History | `/analyses`, `/analyses/{analysis_id}` |
+| Profile | `/auth/profile`, `/auth/change-password`, `/auth/account` |
+| Administration | `/admin/export-users` |
+
+Use the [interactive API reference](https://medgaurd-x.onrender.com/docs) for HTTP methods, request schemas, and authentication requirements.
 
 ## Deployment
 
-### Deployment in Motion
+### From source to deployment
 
-<p align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/WP25_Rocket_-_blue.gif" width="160" height="160" alt="Animated blue rocket illustrating application deployment" />
-</p>
+<p align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/WP25_Rocket_-_blue.gif" width="120" height="120" alt="Animated rocket illustrating deployment" /></p>
+<p align="center"><sub>Illustrative animation, not a deployment-status indicator.</sub></p>
 
-<p align="center"><strong>Commit → Build → Deploy → Review</strong><br /><sub>Illustrative animation; not a live deployment-status indicator.</sub></p>
+| Component | Hosting configuration | Application link |
+| --- | --- | --- |
+| Frontend | Vercel; project root `frontend`, build `npm run build`, output `dist` | [Open dashboard](https://medgaurd-x.vercel.app) |
+| Backend | Render; service configuration in `render.yaml` | [Open API reference](https://medgaurd-x.onrender.com/docs) |
 
-Use the [Vercel frontend](https://medgaurd-x.vercel.app) and [Render API documentation](https://medgaurd-x.onrender.com/docs) to review the deployed application. Deployment settings are described below.
+Automatic deployment behavior depends on the connected hosting account's settings. The frontend currently points non-local requests to the Render URL in `frontend/src/api/axios.js`; update that file when changing API hosts. Configure `FRONTEND_URL` and secrets in the backend hosting environment.
 
-| Service | Purpose | Config |
-|---------|---------|--------|
-| [Render](https://render.com) | Python backend | `render.yaml` |
-| [Vercel](https://vercel.com) | React frontend | root: `frontend` |
+SQLite writes to `medguard.db` beside `database.py`. A production deployment needs an explicit persistence strategy; an ephemeral filesystem can lose saved users and analyses on replacement or redeployment.
 
-**Auto-deploy:** Every push to `main` triggers automatic redeployment on both platforms.
+## Model scope and limitations
 
-> ⚠️ Render free tier sleeps after 15 min of inactivity. First request after sleep takes ~30s to wake up.
+- The checked-in feature schemas each list **17 inputs**, including encoded and derived fields—not 17 separate patient vitals.
+- `train_health.py` constructs risk labels using rules. Evaluation against those labels measures agreement with those rules, not clinical validation.
+- `generate_dataset.py` produces synthetic data. This repository does not establish real-world clinical performance or calibrated fraud probabilities.
+- OCR quality varies with resolution, layout, language, and scan quality. Document structure and keywords cannot prove authenticity.
+- MobileNetV2 is optional. The default requirements omit PyTorch and torchvision, so document scoring uses the OpenCV fallback unless those dependencies are installed.
+- The repository includes fraud inference artifacts, but no `train_fraud.py`; end-to-end fraud-model retraining is not documented here.
 
----
+## Development and contributions
 
-## Screenshots
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, validation, and pull-request guidance. Use the issue templates for reproducible bugs and feature proposals.
 
-| Landing Page | Dashboard | Analysis Results |
-|-------------|-----------|-----------------|
-| Animated hero with ECG overlay | Dual-tab analysis interface | Real-time fraud gauge + risk badge |
+```bash
+cd frontend
+npm run lint
+npm run build
+```
 
----
-
-## Disclaimer
-
-> Built for research and educational purposes only. Not intended for clinical diagnosis or medical decision-making. Always consult a qualified healthcare professional.
-
----
+These commands check frontend linting and production compilation. `test_app.py` is a Streamlit smoke demo, not an automated API test suite.
 
 ## Animation Credits
 
@@ -372,11 +191,6 @@ Use the [Vercel frontend](https://medgaurd-x.vercel.app) and [Render API documen
 
 ## Author
 
-**Harsha Vardhan**  
-AI/ML Developer · [aharsha1587@gmail.com](mailto:aharsha1587@gmail.com) · [GitHub](https://github.com/HarshaAlamanda)
+**Harsha Vardhan Alamanda** · [GitHub](https://github.com/HarshaAlamanda) · [Email](mailto:aharsha1587@gmail.com)
 
----
-
-<div align="center">
-  <sub>Built with FastAPI · React · XGBoost · Tesseract OCR · Framer Motion</sub>
-</div>
+<p align="center"><sub>Built with FastAPI · React · XGBoost · Tesseract OCR · OpenCV</sub></p>
