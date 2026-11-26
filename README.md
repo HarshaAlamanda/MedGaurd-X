@@ -1,21 +1,37 @@
-# MedGuard-X — AI Medical Risk & Fraud Detection Platform
+<h1 align="center">MedGuard-X</h1>
 
-<div align="center">
+<p align="center">
+  <strong>AI-Powered Health Risk &amp; Medical Fraud Analysis</strong>
+</p>
 
-![MedGuard-X](https://img.shields.io/badge/MedGuard--X-AI%20Medical%20Platform-0d9488?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiAyTDIgN2wxMCA1IDEwLTV6TTIgMTdsOSA0LjUgOS00LjV2LTVsLTkgNC41TDIgMTJ6Ii8+PC9zdmc+)
-![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![XGBoost](https://img.shields.io/badge/XGBoost-ML-FF6600?style=for-the-badge)
-![Deployed](https://img.shields.io/badge/Deployed-Live-22c55e?style=for-the-badge&logo=vercel&logoColor=white)
+<p align="center">
+  Explore patient risk, flag suspicious records, and analyze medical documents<br />
+  in one interactive dashboard.
+</p>
 
-**[🚀 Live Demo](https://medgaurd-x.vercel.app)** · **[📡 API Docs](https://medgaurd-x.onrender.com/docs)** · **[📁 GitHub](https://github.com/HarshaAlamanda/MedGaurd-X)**
+<p align="center">
+  <a href="https://medgaurd-x.vercel.app"><strong>Launch Demo</strong></a>
+  &nbsp; &middot; &nbsp;
+  <a href="https://medgaurd-x.onrender.com/docs"><strong>API Documentation</strong></a>
+  &nbsp; &middot; &nbsp;
+  <a href="#getting-started"><strong>Getting Started</strong></a>
+  &nbsp; &middot; &nbsp;
+  <a href="#system-architecture"><strong>Architecture</strong></a>
+</p>
 
-> An end-to-end AI platform that detects medical fraud and health risks in real time.  
-> Analyzes patient vitals, flags anomalous records, and verifies medical document authenticity  
-> using XGBoost, Tesseract OCR, and OpenCV — with animated results, PDF export, and per-user history.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&amp;logo=python&amp;logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&amp;logo=fastapi&amp;logoColor=white" alt="FastAPI" />
+  <img src="https://img.shields.io/badge/React-19-20232a?style=flat-square&amp;logo=react&amp;logoColor=61DAFB" alt="React 19" />
+  <img src="https://img.shields.io/badge/XGBoost-3.2-374151?style=flat-square" alt="XGBoost 3.2" />
+  <img src="https://img.shields.io/badge/OpenCV-374151?style=flat-square&amp;logo=opencv&amp;logoColor=white" alt="OpenCV" />
+</p>
 
-</div>
+MedGuard-X combines **XGBoost risk predictions**, **OCR text extraction**, and **document structure analysis** in a React and FastAPI application. Review model scores, export PDF reports, and revisit saved analyses from your account.
+
+| Health risk | Fraud screening | Document analysis |
+| --- | --- | --- |
+| Estimate patient risk from clinical measurements. | Flag potentially anomalous records with model-generated scores. | Extract text and assess medical-document signals with Tesseract OCR and OpenCV. |
 
 ---
 
@@ -30,7 +46,7 @@
 │   │ Landing  │  │  Login / │  │Dashboard │  │   Profile /  │  │
 │   │  Page    │  │  Signup  │  │ Analysis │  │    Admin     │  │
 │   └──────────┘  └──────────┘  └──────────┘  └──────────────┘  │
-│         React 18 + Vite + Tailwind CSS + Framer Motion          │
+│         React 19 + Vite + Tailwind CSS + Framer Motion          │
 └───────────────────────────┬─────────────────────────────────────┘
                             │ HTTPS (Axios + JWT Bearer)
                             ▼
@@ -245,7 +261,7 @@ ADMIN
 ### Frontend
 | Technology | Purpose |
 |-----------|---------|
-| React 18 + Vite | UI framework + build tool |
+| React 19 + Vite | UI framework + build tool |
 | Tailwind CSS | Utility-first styling |
 | Framer Motion | Page transitions + animations |
 | Axios | HTTP client with JWT interceptor |
